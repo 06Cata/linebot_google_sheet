@@ -1,7 +1,9 @@
 import os
 from flask import Flask, request, abort
 import gspread
-import json 
+import json
+from oauth2client.service_account import ServiceAccountCredentials
+
 
 # --- SDK v2  ---
 from linebot import LineBotApi, WebhookHandler
@@ -24,7 +26,7 @@ try:
     # gc = gspread.service_account(filename=GOOGLE_SHEET_CREDENTIALS)
     service_account_info = json.loads(os.environ["GOOGLE_SERVICE_ACCOUNT_JSON"])
     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-    credentials = gspread.auth.ServiceAccountCredentials.from_json_keyfile_dict(service_account_info, scope)
+    credentials = ServiceAccountCredentials.from_json_keyfile_dict(service_account_info, scope)
     gc = gspread.authorize(credentials)
     
     spreadsheet = gc.open(GOOGLE_SHEET_NAME)
